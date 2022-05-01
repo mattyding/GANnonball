@@ -4,13 +4,13 @@ import mido
 import numpy as np
 
 
-segment_time = 30 #
+segment_time = 30
 
 def loadData():
     '''
     get notes from all midi files
     '''
-    os.chdir('data/')
+    os.chdir(f'{os.getcwd()}/data/')
     midi_files = glob.glob('*.mid')
 
     num_msgs = 0
