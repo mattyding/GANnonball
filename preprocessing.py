@@ -70,7 +70,7 @@ def loadData(songLen=3000, resolution=5, noterange=64):
                 # print(str(starts[j]) + ", " + str(ends[j]))
                 for k in range(starts[j], ends[j]+1):
                     if k < len(song):
-                        song[int(k)][min(int(note - noterange/2), 127)] = 1
+                        song[int(k)][min(int(note - noterange/2), noterange)] = 1
                         
         data.append(song)
         print(f"finished processing {midi_files[i]}", end='\r')
