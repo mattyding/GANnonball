@@ -1,3 +1,4 @@
+import chunk
 import glob
 import mido
 import config
@@ -29,8 +30,8 @@ def loadData(songLen=3000):
 
     for i in range(n):
 
-        song = np.zeros((int(songLen/config.MIDI_RESOLUTION), config.MIDI_NOTE_RANGE), dtype=float)
-
+        song = np.zeros((config.MAX_MIDI_CHUNKS, int(songLen/config.MIDI_RESOLUTION), config.MIDI_NOTE_RANGE), dtype=float)
+        usedChunks = np.zeros(config.MAX_MIDI_CHUNKS)
         noteStarts = {}
         noteEnds = {}
         currTime = 0
@@ -66,11 +67,20 @@ def loadData(songLen=3000):
 
             for j in range(len(starts)):
                 for k in range(starts[j], ends[j]+1):
-                    if k < len(song):
-                        song[int(k)][min(int(note - config.MIDI_NOTE_RANGE/2), config.MIDI_NOTE_RANGE)] = 1
+                    chunkIndex = int(k / (songLen/config.MIDI_RESOLUTION))
+                    # print(k)
+                    # print(chunkIndex)
+                    # print("——")
+                    if chunkIndex < config.MAX_MIDI_CHUNKS:
+                        # print(chunkIndex)
+                        song[chunkIndex][int(k % int(songLen/config.MIDI_RESOLUTION))][min(int(note - config.MIDI_NOTE_RANGE/2), config.MIDI_NOTE_RANGE-1)] = 1
+                        usedChunks[chunkIndex] = True
                         
-        data.append(song)
-        print(f"finished processing {midi_files[i]}", end='\r')
+        for i in range(len(song)):
+            if usedChunks[i]:
+                data.append(song[i])
+        
+        print(f"finished processing {midi_files[i]}")
     return np.array(data)
             
 
