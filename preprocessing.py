@@ -1,9 +1,10 @@
-import os, glob
+import glob
 import mido
+import config
 
 import numpy as np
 
-def loadData(songLen=3000, resolution=5, noterange=64):
+def loadData(songLen=3000):
     '''
     get notes from all midi files
     '''
@@ -24,11 +25,11 @@ def loadData(songLen=3000, resolution=5, noterange=64):
 
     data = []
 
-    n = 1#len(midi_files)
+    n = len(midi_files)
 
     for i in range(n):
 
-        song = np.zeros((int(songLen/resolution), noterange), dtype=float)
+        song = np.zeros((int(songLen/config.MIDI_RESOLUTION), config.MIDI_NOTE_RANGE), dtype=float)
 
         noteStarts = {}
         noteEnds = {}
@@ -47,11 +48,11 @@ def loadData(songLen=3000, resolution=5, noterange=64):
             if type == 'note_on':
                 if note not in noteStarts:
                     noteStarts[note] = []
-                noteStarts[note].append(int(currTime/resolution)) #TODO: add velocity as tuple or something
+                noteStarts[note].append(int(currTime/config.MIDI_RESOLUTION)) #TODO: add velocity as tuple or something
             if type == 'note_off':
                 if note not in noteEnds:
                     noteEnds[note] = []
-                noteEnds[note].append(int(currTime/resolution))
+                noteEnds[note].append(int(currTime/config.MIDI_RESOLUTION))
         
 
         notes = list(noteStarts.keys())
@@ -64,12 +65,9 @@ def loadData(songLen=3000, resolution=5, noterange=64):
             ends.sort()
 
             for j in range(len(starts)):
-                # print(note)
-                # print(song.shape)
-                # print(str(starts[j]) + ", " + str(ends[j]))
                 for k in range(starts[j], ends[j]+1):
                     if k < len(song):
-                        song[int(k)][min(int(note - noterange/2), noterange)] = 1
+                        song[int(k)][min(int(note - config.MIDI_NOTE_RANGE/2), config.MIDI_NOTE_RANGE)] = 1
                         
         data.append(song)
         print(f"finished processing {midi_files[i]}", end='\r')
