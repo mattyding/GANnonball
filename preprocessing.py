@@ -24,7 +24,7 @@ def loadData(songLen=3000, resolution=5, noterange=64):
 
     data = []
 
-    n = len(midi_files)
+    n = 1#len(midi_files)
 
     for i in range(n):
 

@@ -6,7 +6,7 @@ import mido
 def vecToMidi(vec, resolution=5, noterange=64):
     # get the difference
     new_vec = np.concatenate([np.array([[0] * noterange]), np.array(vec)], axis=0)
-    res_vec = np.repeat(new_vec, resolution)
+    new_vec = np.repeat(new_vec, resolution, axis=0)
     changes = new_vec[1:] - new_vec[:-1]
     # create a midi file with an empty track
     mid_new = mido.MidiFile()
@@ -23,14 +23,14 @@ def vecToMidi(vec, resolution=5, noterange=64):
             off_notes = np.where(ch < 0)[0]
             first_ = True
             for n, v in zip(on_notes, on_notes_vol):
-                print(n, v)
+                # print(n, v)
                 new_time = last_time if first_ else 0
-                track.append(mido.Message('note_on', note=n + 21 + (noterange / 2), velocity=v,
-                                          time=new_time))
+                track.append(mido.Message('note_on', note=int(n + 21), velocity=int(v),
+                                          time=int(new_time)))
                 first_ = False
             for n in off_notes:
                 new_time = last_time if first_ else 0
-                track.append(mido.Message('note_off', note=n + 21 + (noterange / 2), velocity=0, time=new_time))
+                track.append(mido.Message('note_off', note=int(n + 21), velocity=0, time=new_time))
                 first_ = False
             last_time = 0
     return mid_new
