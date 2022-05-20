@@ -48,11 +48,11 @@ def loadData(songLen=3000, resolution=5, noterange=64):
             if type == 'note_on':
                 if note not in noteStarts:
                     noteStarts[note] = []
-                noteStarts[note].append(currTime) #TODO: add velocity as tuple or something
+                noteStarts[note].append(int(currTime/resolution)) #TODO: add velocity as tuple or something
             if type == 'note_off':
                 if note not in noteEnds:
                     noteEnds[note] = []
-                noteEnds[note].append(currTime)
+                noteEnds[note].append(int(currTime/resolution))
         
 
         notes = list(noteStarts.keys())
@@ -70,7 +70,7 @@ def loadData(songLen=3000, resolution=5, noterange=64):
                 # print(str(starts[j]) + ", " + str(ends[j]))
                 for k in range(starts[j], ends[j]+1):
                     if k < len(song):
-                        song[int(k/resolution)][min(int(note - noterange/2), 127)] = 1
+                        song[int(k)][min(int(note - noterange/2), 127)] = 1
                         
         data.append(song)
         print(f"finished processing {midi_files[i]}", end='\r')
