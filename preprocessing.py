@@ -3,9 +3,6 @@ import mido
 
 import numpy as np
 
-
-segment_time = 30
-
 def loadData():
     '''
     get notes from all midi files
@@ -26,9 +23,14 @@ def loadData():
         mido.Message('note_off', channel=0, note=58, velocity=83, time=276) --> ['off' 0 58 83 276]
     '''
 
-    data = np.zeros((len(midi_files), 30000), dtype=float)
+    data = []
 
-    for i in range(len(midi_files)):
+    n = len(midi_files)
+
+    for i in range(n):
+
+        song = np.zeros((3000, 128), dtype=float)
+
         noteStarts = {}
         noteEnds = {}
         currTime = 0
@@ -54,6 +56,7 @@ def loadData():
         
 
         notes = list(noteStarts.keys())
+        # print(song.shape)
         for note in notes:
             starts = [x for x in noteStarts[note]]
             ends = [x for x in noteEnds[note]]
@@ -62,12 +65,19 @@ def loadData():
             ends.sort()
 
             for j in range(len(starts)):
-                data[i][starts[j]:ends[j]] = note
-
+                # print(note)
+                # print(song.shape)
+                # print(str(starts[j]) + ", " + str(ends[j]))
+                for k in range(starts[j], ends[j]+1):
+                    if k < len(song):
+                        song[k][note] = 1
+                        
+        data.append(song)
         print(f"finished processing {midi_files[i]}", end='\r')
-    return data
+    return np.array(data)
             
 
 
 if __name__ == '__main__':
-    print(loadData())
+    loadData()
+    print("yuh")

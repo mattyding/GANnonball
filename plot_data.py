@@ -4,9 +4,12 @@ import matplotlib.pyplot as plt
 
 data = preprocessing.loadData()
 
-n = len(data[0])
-data = data.T
+song1 = data[0]
 
-plt.imshow(data, cmap='hot', aspect='auto')
+
+# n = len(song1[0])
+song1 = song1.T
+
+plt.imshow(song1, cmap='hot', aspect='auto')
 plt.colorbar()
 plt.show()
