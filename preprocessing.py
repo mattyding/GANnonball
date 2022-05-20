@@ -76,11 +76,11 @@ def loadData(songLen=3000):
                         song[chunkIndex][int(k % int(songLen/config.MIDI_RESOLUTION))][min(int(note - config.MIDI_NOTE_RANGE/2), config.MIDI_NOTE_RANGE-1)] = 1
                         usedChunks[chunkIndex] = True
                         
-        for i in range(len(song)):
-            if usedChunks[i]:
-                data.append(song[i])
+        for q in range(len(song)):
+            if usedChunks[q]:
+                data.append(song[q])
         
-        print(f"finished processing {midi_files[i]}")
+        print(f"finished processing {midi_files[i]}", end='\r')
     return np.array(data)
             
 

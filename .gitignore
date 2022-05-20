@@ -2,7 +2,9 @@ trained_models/
 gan2.py
 .venv/
 .vscode/
-
+models/
+*.mid
+samples/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
