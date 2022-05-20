@@ -1,12 +1,12 @@
 import numpy as np
 import mido
+import config
 
 
-
-def vecToMidi(vec, resolution=5, noterange=64):
+def vecToMidi(vec):
     # get the difference
-    new_vec = np.concatenate([np.array([[0] * noterange]), np.array(vec)], axis=0)
-    new_vec = np.repeat(new_vec, resolution, axis=0)
+    new_vec = np.concatenate([np.array([[0] * config.MIDI_NOTE_RANGE]), np.array(vec)], axis=0)
+    new_vec = np.repeat(new_vec, config.MIDI_RESOLUTION, axis=0)
     changes = new_vec[1:] - new_vec[:-1]
     # create a midi file with an empty track
     mid_new = mido.MidiFile()
