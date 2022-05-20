@@ -3,7 +3,7 @@ import mido
 
 import numpy as np
 
-def loadData(resolution=5, noterange=64):
+def loadData(songLen=3000, resolution=5, noterange=64):
     '''
     get notes from all midi files
     '''
@@ -29,7 +29,7 @@ def loadData(resolution=5, noterange=64):
 
     for i in range(n):
 
-        song = np.zeros((int(3000/resolution), noterange), dtype=float)
+        song = np.zeros((int(songLen/resolution), noterange), dtype=float)
 
         noteStarts = {}
         noteEnds = {}
