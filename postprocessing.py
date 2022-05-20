@@ -25,12 +25,12 @@ def vecToMidi(vec):
             for n, v in zip(on_notes, on_notes_vol):
                 # print(n, v)
                 new_time = last_time if first_ else 0
-                track.append(mido.Message('note_on', note=int(n + 21), velocity=int(v),
+                track.append(mido.Message('note_on', note=int(n + 21 + config.MIDI_NOTE_RANGE/2), velocity=int(v*100),
                                           time=int(new_time)))
                 first_ = False
             for n in off_notes:
                 new_time = last_time if first_ else 0
-                track.append(mido.Message('note_off', note=int(n + 21), velocity=0, time=new_time))
+                track.append(mido.Message('note_off', note=int(n + 21 + config.MIDI_NOTE_RANGE/2), velocity=0, time=new_time))
                 first_ = False
             last_time = 0
     return mid_new

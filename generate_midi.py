@@ -4,6 +4,7 @@ import config
 from tensorflow.keras import layers
 import matplotlib.pyplot as plt
 import postprocessing
+import numpy as np
 
 songLength = 600
 
@@ -36,14 +37,34 @@ def make_generator_model():
 
 model = make_generator_model()
 
-model_path = "models/gan_50_generator.h5"
+model_path = "models/generator_50.h5"
 model.load_weights(model_path)
 
-noise = tf.random.normal([1, 100])
-generated_image = model(noise, training=False)
 
-# plt.imshow(generated_image[0, :, :, 0], cmap='gray')
-# plt.show()
+vec = []
+n = 2
 
-midi = postprocessing.vecToMidi(generated_image[0, :, :, 0])
+for i in range(n):
+    tf.random.set_seed(i)
+    noise = tf.random.normal([1, 100])
+    generated_image = model(noise, training=False)
+
+    cutoff = 60
+
+    img = generated_image[0, :, :, 0].numpy()
+    for i in range(len(img)):
+        for j in range(len(img[i])):
+            # print(img[i][j])
+            img[i][j] = 1 if img[i][j] > -0.8 else 0
+            if j > cutoff:
+                img[i][j] = 0
+    vec.append(img)
+
+vec = np.array(vec).reshape(n*songLength, 64)
+
+plt.imshow(vec, cmap='gray')
+plt.show()
+
+print(vec.shape)
+midi = postprocessing.vecToMidi(vec)
 midi.save("generated.mid")
