@@ -7,8 +7,10 @@ def loadData(songLen=3000, resolution=5, noterange=64):
     '''
     get notes from all midi files
     '''
+    olddir = os.getcwd()
     os.chdir(f'{os.getcwd()}/data/')
     midi_files = glob.glob('*.mid')
+    os.chdir(olddir)
 
     num_msgs = 0
     for midi_file in midi_files:
