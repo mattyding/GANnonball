@@ -42,10 +42,10 @@ model.load_weights(model_path)
 
 
 vec = []
-n = 2
+n = 1
 
 for i in range(n):
-    tf.random.set_seed(i)
+    tf.random.set_seed(i*50)
     noise = tf.random.normal([1, 100])
     generated_image = model(noise, training=False)
 
@@ -55,16 +55,17 @@ for i in range(n):
     for i in range(len(img)):
         for j in range(len(img[i])):
             # print(img[i][j])
-            img[i][j] = 1 if img[i][j] > -0.8 else 0
-            if j > cutoff:
+            img[i][j] = 1 if img[i][j] > -0.82 else 0
+            if j > cutoff or i < 3:
                 img[i][j] = 0
     vec.append(img)
 
 vec = np.array(vec).reshape(n*songLength, 64)
 
 plt.imshow(vec, cmap='gray')
+plt.savefig('output.png')
 plt.show()
 
-print(vec.shape)
-midi = postprocessing.vecToMidi(vec)
-midi.save("generated.mid")
+# print(vec.shape)
+# midi = postprocessing.vecToMidi(vec)
+# midi.save("generated.mid")

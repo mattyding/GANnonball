@@ -10,6 +10,10 @@ print(len(data))
 # n = len(song1[0])
 song1 = song1.T
 
-plt.imshow(song1, cmap='hot', aspect='auto')
-plt.colorbar()
+# for i in range(len(song1)):
+#         for j in range(len(song1[i])):
+#             # print(img[i][j])
+#             song1[i][j] = 1 if song1[i][j] > 0 else 0
+
+plt.imshow(song1, cmap='hot')
 plt.show()

@@ -26,11 +26,11 @@ def loadData(songLen=3000):
 
     data = []
 
-    n = len(midi_files)
+    n = 1#len(midi_files)
 
     for i in range(n):
 
-        song = np.zeros((config.MAX_MIDI_CHUNKS, int(songLen/config.MIDI_RESOLUTION), config.MIDI_NOTE_RANGE), dtype=float)
+        song = np.zeros((config.MAX_MIDI_CHUNKS, int(songLen/config.MIDI_RESOLUTION), config.NOTE_CLUMPS), dtype=float)
         usedChunks = np.zeros(config.MAX_MIDI_CHUNKS)
         noteStarts = {}
         noteEnds = {}
@@ -73,7 +73,7 @@ def loadData(songLen=3000):
                     # print("——")
                     if chunkIndex < config.MAX_MIDI_CHUNKS:
                         # print(chunkIndex)
-                        song[chunkIndex][int(k % int(songLen/config.MIDI_RESOLUTION))][min(int(note - config.MIDI_NOTE_RANGE/2), config.MIDI_NOTE_RANGE-1)] = 1
+                        song[chunkIndex][int(k % int(songLen/config.MIDI_RESOLUTION))][int(int(min(int(note - config.MIDI_NOTE_RANGE/2), config.MIDI_NOTE_RANGE-1))/config.CLUMP_FACTOR)] = 1
                         usedChunks[chunkIndex] = True
                         
         for q in range(len(song)):
