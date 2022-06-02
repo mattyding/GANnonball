@@ -1,5 +1,6 @@
 trained_models/
 gan2.py
+training_checkpoints/
 .venv/
 .vscode/
 models/
