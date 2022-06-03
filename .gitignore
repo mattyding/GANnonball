@@ -6,6 +6,10 @@ training_checkpoints/
 models/
 *.mid
 samples/
+conv_gan2.py
+plot_data.py
+posttest.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
